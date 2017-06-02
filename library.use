@@ -1,0 +1,117 @@
+model Library
+
+class Borrower
+	attributes
+	
+		name : String
+		itemAmount : Integer
+		loanDuration : String
+		fine : Integer
+		
+	operations
+		
+		getBook(book: String)
+		begin
+			WriteLine('Book Withdrawn: ' + book)
+		end
+		returnBook(book : String)
+		begin 
+			WriteLine('Book returned: ' + book)
+		end 
+			
+		borrowCopy(num:Copy, x : Integer)
+		begin
+			self.itemAmount := self.itemAmount + x;
+			if self.itemAmount > 6 then
+			self.itemAmount := 6;
+				WriteLine('You have the max number of books! ')
+			else
+			num.mkBorrow(x)
+			end
+		end 
+		
+		returnCopy(num:Copy, x :Integer)
+		begin
+			self.itemAmount := self.itemAmount - x;
+			if self.itemAmount < 1 then 
+				self.itemAmount := 0;
+				WriteLine('All Books Returned! ')
+			else
+			num.mkReturn(x)
+			end
+		end	
+		
+		
+		payFine( x : Integer) 
+		begin
+			declare fine : Integer;
+			fine := 0;
+			self.fine := self.fine - x;
+			if self.fine = 0 then
+				WriteLine('No fines. ');
+			else
+				fine := self.fine;
+				WriteLine('You an unpaid fine!');
+			end
+		end
+end
+
+class Book
+	attributes
+		book : String
+		x : Integer  
+	operations
+		borrow(m:Borrower, book:String)
+		begin
+			self.x := self.x + 1;
+			m.getBook(book)
+		end
+		return(m:Borrower, book:String)
+		begin
+			m.returnBook(book)
+		end
+		
+
+end
+
+class Journal < Book
+	attributes
+		journal : String
+end
+
+class Copy 
+	attributes
+		copies : Integer
+	operations
+		mkBorrow(x: Integer)
+			begin
+				self.copies := self.copies - x;
+			end
+		mkReturn(x: Integer)
+			begin
+				self.copies := self.copies + x;
+			end
+			
+	getCopies() : Integer
+	begin 
+		result := self.copies
+	end
+end
+
+class MemberOfStaff < Borrower
+end
+				
+association is_a_copy_of between
+	Book[1] 
+	Copy[1..*]  
+end
+
+association borrows_returns between
+	Borrower[1] 
+	Copy[0..*]
+end
+
+association returns_borrows between
+	MemberOfStaff[1]
+	Journal[0..*]
+end

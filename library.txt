@@ -1,0 +1,53 @@
+USE version 4.2.0, Copyright (C) 1999-2016 University of Bremen
+use> !new Borrower ('Gary')
+use> !Gary.name := 'Gary'
+use> !Gary.itemAmount := 0
+use> !Gary.loadDuration := 0
+<input>:1:0: Class `Borrower' does not have an attribute `loadDuration'.
+use> !Gary.loanDuration := 0
+<input>:1:0: Type mismatch in assignment expression. Expected type `String', found `Integer'.
+use> !Gary.loanDuration := 'N/A'
+use> !Gary.fine := 0
+use> !new Boo ('book1')
+<input>:1:0: Expected type name, found `Boo'.
+use> !new BooK ('book1')
+<input>:1:0: Expected type name, found `BooK'.
+use> !new Book ('book1')
+use> book1.book := 'Harry Potter'
+Error: Unknown command `book1.book := 'Harry Potter''. Try `help'.
+use> !book1.book := 'Harry Potter'
+use> !book1.x := 1
+use> !new Copy ('copy1')
+use> !copy1.copies := 5
+use> insert (book1, copy1) into is_a_copy_of
+Error: Unknown command `insert (book1, copy1) into is_a_copy_of'. Try `help'.
+use> !insert (book1, copy1) into is_a_copy_of
+use> !insert (copy1,Gary) into borrows_returns
+<input>:1:0: Participant 1 of association `borrows_returns' must be of type `Borrower', but `copy1' is of type `Copy'.
+use> !insert (Gary,copy1) into borrows_returns
+use> !new Journal ('Journal1')
+use> !Journal1.journal := 'The Good Life'
+use> !new MemberOfStaff ('staff1')
+use> !insert (staff1,Journal1) into returns_borrows
+use> !Gary.getGook('Harry Potter')
+<input>:1:0: No operation `getGook'found in class `Borrower'.
+use> !Gary.getBook('Harry Potter')
+Book Withdrawn: Harry Potter
+use> !Gary.borrowCopy('copy1', 1)
+<input>:1:0: Type mismatch for operation borrowCopy(num : Copy, x : Integer) in argument 1. Expected type `Copy', found `String'.
+use> !Gary.borrowCopy(copy1, 1)
+use> !Gary.fine := 100
+use> !Gary.returnBook('Harry Potter')
+Book Returned: Harry Potter
+use> !Gary.returnCopy(copy1, 1)
+All Books Returned! 
+use> !Gary.borrowCopy(copy1, 1)
+use> !Gary.borrowCopy(copy1, 2)
+use> !Gary.getBook('Harry Potter')
+You have taken this book: Harry Potter
+use> !Gary.payFine(75)
+You have an unpaid fine!
+use> !Gary.payFine(25)
+No fines. 
+use> !copy1.getCopies()
+use> 
